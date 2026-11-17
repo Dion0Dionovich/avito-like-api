@@ -49,3 +49,12 @@ async def pr_34_one_love(
     who_are_you: str
 ) -> str:
     return f"ЙОУ! {who_are_you} из ПР34 ты крут!"
+
+@users_router.get("/all-users")
+async def get_all_users(
+    service: UserService = Depends(get_user_service),
+) -> list[UserRead]:
+    users = await service.get_all_users()
+    if not users:
+        raise HTTPException(status_code=404, detail="Пользователей нет - все сбежали")
+    return users
